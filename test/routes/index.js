@@ -1,1 +1,1 @@
-require('./user-routes-spec')
+require('./device-routes-spec')

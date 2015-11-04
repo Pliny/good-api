@@ -1,2 +1,2 @@
-require('./user-spec');
+require('./device-spec');
 

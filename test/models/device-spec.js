@@ -10,21 +10,21 @@ describe('test', function() {
   });
 });
 
-describe('User', function() {
+describe('Device', function() {
 
   it('should exist', function() {
-    var table = db.sequelize.models['User']
+    var table = db.sequelize.models['Device']
     should.exist(table);
     table.should.be.an.Object();
   });
 
   it('should write to the db', function(done) {
     return db.sequelize.transaction().then(function (t) {
-      return db.User.create(
+      return db.Device.create(
         {"name":"JoeBlo", "sample_interval": 3, "device_id": "123456789"},
         {transaction: t}
-      ).then(function (user) {
-        user.device_id.should.equal("123456789");
+      ).then(function (device) {
+        device.device_id.should.equal("123456789");
         t.rollback();
         done();
       });
@@ -38,7 +38,7 @@ describe('User', function() {
     before(function (done) {
       return db.sequelize.transaction().then(function (t) {
         pendingTrans = t;
-        return db.User.create(
+        return db.Device.create(
           {"name":"JoeBlew", "sample_interval": 3, "device_id": "123456789"},
           { transaction: t }
         ).then(function() { done(); });
@@ -50,20 +50,20 @@ describe('User', function() {
     });
 
     it('should have a name', function() {
-      return db.User.findOne({transaction: pendingTrans}).then(function(user) {
-        return user.name.should.equal("JoeBlew");
+      return db.Device.findOne({transaction: pendingTrans}).then(function(device) {
+        return device.name.should.equal("JoeBlew");
       });
     });
 
     it('should have a device_id', function() {
-      return db.User.findOne({transaction: pendingTrans}).then(function(user) {
-        return user.device_id.should.equal("123456789");
+      return db.Device.findOne({transaction: pendingTrans}).then(function(device) {
+        return device.device_id.should.equal("123456789");
       });
     });
 
     it('should have a sample_interval', function() {
-      return db.User.findOne({transaction: pendingTrans}).then(function(user) {
-        return user.sample_interval.should.equal(3);
+      return db.Device.findOne({transaction: pendingTrans}).then(function(device) {
+        return device.sample_interval.should.equal(3);
       });
     });
   });
@@ -75,7 +75,7 @@ describe('User', function() {
     beforeEach(function (done) {
       return db.sequelize.transaction().then(function (t) {
         pendingTrans = t;
-        return db.User.create(
+        return db.Device.create(
           {"name":"JoeBla", "sample_interval": 6, "device_id": "987654321"},
           { transaction: t }
         ).then(function() { done(); });
@@ -90,7 +90,7 @@ describe('User', function() {
     describe('of device_id', function() {
 
       it('should be unique', function() {
-        return db.User.create(
+        return db.Device.create(
           {"name":"JoeBla", "sample_interval": 6, "device_id": "987654321"},
           { transaction: pendingTrans }
         ).then(function() {
@@ -106,7 +106,7 @@ describe('User', function() {
       });
 
       it('should not be null', function() {
-        return db.User.create(
+        return db.Device.create(
           {"name":"JoeBla", "sample_interval": 6, "device_id": null },
           { transaction: pendingTrans }
         ).then(function() {
@@ -126,17 +126,17 @@ describe('User', function() {
     describe('of sample_interval', function() {
 
       it('should default to 2', function() {
-        return db.User.create(
+        return db.Device.create(
           {"name":"JoeBla", "device_id": "12345678"},
           { transaction: pendingTrans }
-        ).then(function(user) {
-          should.exist(user.sample_interval)
-          user.sample_interval.should.equal(2);
+        ).then(function(device) {
+          should.exist(device.sample_interval)
+          device.sample_interval.should.equal(2);
         });
       });
 
       it('should not be null', function() {
-        return db.User.create(
+        return db.Device.create(
           {"name":"JoeBla", "sample_interval": null, "device_id": "12345678"},
           { transaction: pendingTrans }
         ).then(function() {
