@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var devices = require('./routes/devices');
 
+var api = require(__dirname + '/config/api-info.js');
+
 var app = express();
 
 // view engine setup
@@ -23,7 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/devices', devices);
+app.use(api.NAMESPACE + '/devices', devices);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
