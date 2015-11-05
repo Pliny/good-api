@@ -24,6 +24,7 @@
     "should": "^7.1.1",
     "sinon": "^1.17.2",
     "supertest": "^1.1.0",
-    "supervisor": "^0.9.1"
+    "supervisor": "^0.9.1",
+    "timekeeper": "0.0.5"
   }
 }

@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
+        Device.hasMany(models.SampleData, { foreignKey: 'device_id' });
         // associations can be defined here
       }
     }

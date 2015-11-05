@@ -145,4 +145,34 @@ describe('Device', function() {
       });
     });
   });
+
+  describe('.associations', function() {
+
+    it('has many SampleData objects', function(done) {
+      var trans;
+      var device;
+      return db.sequelize.transaction()
+      .then(function(t) {
+        trans = t;
+        return db.Device.create({ "device_id": "987654321" }, {transaction: t});
+      })
+      .then(function(deviceObj) {
+        var sampledataObj = [];
+        device = deviceObj;
+        sampledataObj[0] = {"device_id": deviceObj.id, "value": 8, "session_start": true};
+        sampledataObj[1] = {"device_id": deviceObj.id, "value": 4, "session_start": false};
+        sampledataObj[2] = {"device_id": deviceObj.id, "value": 6, "session_start": false};
+        return db.SampleData.bulkCreate(sampledataObj, {transaction: trans});
+      })
+      .then(function() {
+        should.exist(device.getSampleData);
+        return device.getSampleData({transaction: trans});
+      })
+      .then(function(sampledata) {
+        sampledata.length.should.equal(3);
+        trans.rollback();
+        done();
+      });
+    });
+  });
 });
