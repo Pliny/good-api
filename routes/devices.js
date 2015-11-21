@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 
 /* SHOW */
 router.get('/:device_id', function(req, res, next) {
-  db.Device.findOne({attributes: [ 'device_id', 'name', 'sample_interval' ], where: { device_id : req['params']['device_id']}})
+  db.Device.findOne({attributes: [ 'id', 'device_id', 'name', 'sample_interval' ], where: { device_id : req['params']['device_id']}})
     .then(function(device) {
       if(device) {
         res.send(device);
